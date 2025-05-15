@@ -26,7 +26,6 @@ export function handlePairCreated(event: PairCreated): void {
     token0.derivedETH = BigInt.fromI32(0).toBigDecimal()
     token0.save()
   }
-
   if (token1 === null) {
     token1 = new Token(event.params.token1.toHexString())
     let erc20 = ERC20.bind(event.params.token1)

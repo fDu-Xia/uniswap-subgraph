@@ -77,7 +77,6 @@ export function handleMint(event: Mint): void {
   mint.timestamp = event.block.timestamp
   mint.pair = pair.id
   mint.sender = event.params.sender
-  mint.owner = event.params.to
   // 需要通过其他方式获取确切的流动性和金额
   mint.liquidity = BigInt.fromI32(0).toBigDecimal() // 实际应用中需要从其他地方获取
   mint.amount0 = BigInt.fromI32(0).toBigDecimal()
