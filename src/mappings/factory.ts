@@ -1,9 +1,9 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
-import { PairCreated } from '../generated/Factory/Factory'
-import { Pair, Token } from '../generated/schema'
-import { Pair as PairTemplate } from '../generated/templates'
-import { Pair as PairContract } from '../generated/templates/Pair/Pair'
-import { ERC20 } from '../generated/Factory/ERC20'
+import { PairCreated } from '../../generated/Factory/Factory'
+import { Pair, Token } from '../../generated/schema'
+import { Pair as PairTemplate } from '../../generated/templates'
+import { Pair as PairContract } from '../../generated/templates/Pair/Pair'
+import { ERC20 } from '../../generated/Factory/ERC20'
 
 export function handlePairCreated(event: PairCreated): void {
   // 加载或创建两个token

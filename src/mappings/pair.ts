@@ -5,17 +5,17 @@ import {
   Swap as SwapEvent,
   Mint as MintEvent,
   Burn as BurnEvent
-} from '../generated/schema'
+} from '../../generated/schema'
 import {
   Swap,
   Sync,
   Transfer,
   Mint,
   Burn
-} from '../generated/templates/Pair/Pair'
+} from '../../generated/templates/Pair/Pair'
 
 export function handleSwap(event: Swap): void {
-  let pair = Pair.load(event.address.toHexString())
+  let pair = Pair.load(event.address.toHexString())!
   let token0 = Token.load(pair.token0)
   let token1 = Token.load(pair.token1)
   
@@ -44,7 +44,7 @@ export function handleSwap(event: Swap): void {
 }
 
 export function handleSync(event: Sync): void {
-  let pair = Pair.load(event.address.toHexString())
+  let pair = Pair.load(event.address.toHexString())!
   
   pair.reserve0 = event.params.reserve0.toBigDecimal()
   pair.reserve1 = event.params.reserve1.toBigDecimal()
@@ -69,7 +69,7 @@ export function handleTransfer(event: Transfer): void {
 }
 
 export function handleMint(event: Mint): void {
-  let pair = Pair.load(event.address.toHexString())
+  let pair = Pair.load(event.address.toHexString())!
   
   let mint = new MintEvent(
     event.transaction.hash.toHexString() + '-' + event.logIndex.toString()
@@ -90,7 +90,7 @@ export function handleMint(event: Mint): void {
 }
 
 export function handleBurn(event: Burn): void {
-  let pair = Pair.load(event.address.toHexString())
+  let pair = Pair.load(event.address.toHexString())!
   
   let burn = new BurnEvent(
     event.transaction.hash.toHexString() + '-' + event.logIndex.toString()

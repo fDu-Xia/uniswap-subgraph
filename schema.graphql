@@ -53,6 +53,7 @@ type Mint @entity(immutable: true) {
   timestamp: BigInt!
   pair: Pair!
   sender: Bytes!
+  to: Bytes!
   owner: Bytes!
   liquidity: BigDecimal!
   amount0: BigDecimal!
