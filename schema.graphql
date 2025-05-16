@@ -48,28 +48,3 @@ type Swap @entity(immutable: true) {
   amountUSD: BigDecimal!
 }
 
-type Mint @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt!
-  pair: Pair!
-  sender: Bytes!
-  owner: Bytes!
-  liquidity: BigDecimal!
-  amount0: BigDecimal!
-  amount1: BigDecimal!
-  amountUSD: BigDecimal
-  logIndex: BigInt!
-}
-
-type Burn @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt!
-  pair: Pair!
-  sender: Bytes!
-  owner: Bytes
-  liquidity: BigDecimal!
-  amount0: BigDecimal!
-  amount1: BigDecimal!
-  amountUSD: BigDecimal
-  logIndex: BigInt!
-}

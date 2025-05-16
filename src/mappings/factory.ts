@@ -1,8 +1,7 @@
-import { BigInt, Address } from '@graphprotocol/graph-ts'
+import { BigInt} from '@graphprotocol/graph-ts'
 import { PairCreated } from '../../generated/Factory/Factory'
 import { Pair, Token } from '../../generated/schema'
 import { Pair as PairTemplate } from '../../generated/templates'
-import { Pair as PairContract } from '../../generated/templates/Pair/Pair'
 import { ERC20 } from '../../generated/Factory/ERC20'
 
 export function handlePairCreated(event: PairCreated): void {
@@ -14,10 +13,20 @@ export function handlePairCreated(event: PairCreated): void {
   if (token0 === null) {
     token0 = new Token(event.params.token0.toHexString())
     let erc20 = ERC20.bind(event.params.token0)
-    token0.symbol = erc20.symbol()
-    token0.name = erc20.name()
-    token0.decimals = BigInt.fromI32(erc20.decimals())
-    token0.totalSupply = erc20.totalSupply()
+
+    // 使用try_方法安全调用
+    let symbolResult = erc20.try_symbol()
+    token0.symbol = symbolResult.reverted ? "UNKNOWN" : symbolResult.value
+
+    let nameResult = erc20.try_name()
+    token0.name = nameResult.reverted ? "Unknown Token" : nameResult.value
+
+    let decimalsResult = erc20.try_decimals()
+    token0.decimals = decimalsResult.reverted ? BigInt.fromI32(18) : BigInt.fromI32(decimalsResult.value)
+
+    let totalSupplyResult = erc20.try_totalSupply()
+    token0.totalSupply = totalSupplyResult.reverted ? BigInt.fromI32(0) : totalSupplyResult.value
+
     token0.tradeVolume = BigInt.fromI32(0).toBigDecimal()
     token0.tradeVolumeUSD = BigInt.fromI32(0).toBigDecimal()
     token0.untrackedVolumeUSD = BigInt.fromI32(0).toBigDecimal()
@@ -26,13 +35,24 @@ export function handlePairCreated(event: PairCreated): void {
     token0.derivedETH = BigInt.fromI32(0).toBigDecimal()
     token0.save()
   }
+
   if (token1 === null) {
     token1 = new Token(event.params.token1.toHexString())
     let erc20 = ERC20.bind(event.params.token1)
-    token1.symbol = erc20.symbol()
-    token1.name = erc20.name()
-    token1.decimals = BigInt.fromI32(erc20.decimals())
-    token1.totalSupply = erc20.totalSupply()
+
+    // 使用try_方法安全调用
+    let symbolResult = erc20.try_symbol()
+    token1.symbol = symbolResult.reverted ? "UNKNOWN" : symbolResult.value
+
+    let nameResult = erc20.try_name()
+    token1.name = nameResult.reverted ? "Unknown Token" : nameResult.value
+
+    let decimalsResult = erc20.try_decimals()
+    token1.decimals = decimalsResult.reverted ? BigInt.fromI32(18) : BigInt.fromI32(decimalsResult.value)
+
+    let totalSupplyResult = erc20.try_totalSupply()
+    token1.totalSupply = totalSupplyResult.reverted ? BigInt.fromI32(0) : totalSupplyResult.value
+
     token1.tradeVolume = BigInt.fromI32(0).toBigDecimal()
     token1.tradeVolumeUSD = BigInt.fromI32(0).toBigDecimal()
     token1.untrackedVolumeUSD = BigInt.fromI32(0).toBigDecimal()

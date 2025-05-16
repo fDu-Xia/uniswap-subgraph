@@ -1,17 +1,12 @@
-import { BigInt, BigDecimal, store } from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 import {
   Pair,
   Token,
   Swap as SwapEvent,
-  Mint as MintEvent,
-  Burn as BurnEvent
 } from '../../generated/schema'
 import {
   Swap,
   Sync,
-  Transfer,
-  Mint,
-  Burn
 } from '../../generated/templates/Pair/Pair'
 
 export function handleSwap(event: Swap): void {
@@ -64,47 +59,4 @@ export function handleSync(event: Sync): void {
   pair.save()
 }
 
-export function handleTransfer(event: Transfer): void {
-  // 这里可以处理LP Token的转账，追踪流动性提供者等
-}
 
-export function handleMint(event: Mint): void {
-  let pair = Pair.load(event.address.toHexString())!
-  
-  let mint = new MintEvent(
-    event.transaction.hash.toHexString() + '-' + event.logIndex.toString()
-  )
-  mint.timestamp = event.block.timestamp
-  mint.pair = pair.id
-  mint.sender = event.params.sender
-  // 需要通过其他方式获取确切的流动性和金额
-  mint.liquidity = BigInt.fromI32(0).toBigDecimal() // 实际应用中需要从其他地方获取
-  mint.amount0 = BigInt.fromI32(0).toBigDecimal()
-  mint.amount1 = BigInt.fromI32(0).toBigDecimal()
-  mint.logIndex = event.logIndex
-  mint.save()
-  
-  pair.txCount = pair.txCount.plus(BigInt.fromI32(1))
-  pair.save()
-}
-
-export function handleBurn(event: Burn): void {
-  let pair = Pair.load(event.address.toHexString())!
-  
-  let burn = new BurnEvent(
-    event.transaction.hash.toHexString() + '-' + event.logIndex.toString()
-  )
-  burn.timestamp = event.block.timestamp
-  burn.pair = pair.id
-  burn.sender = event.params.sender
-  burn.owner = event.params.to
-  // 需要通过其他方式获取确切的流动性和金额
-  burn.liquidity = BigInt.fromI32(0).toBigDecimal()
-  burn.amount0 = BigInt.fromI32(0).toBigDecimal()
-  burn.amount1 = BigInt.fromI32(0).toBigDecimal()
-  burn.logIndex = event.logIndex
-  burn.save()
-  
-  pair.txCount = pair.txCount.plus(BigInt.fromI32(1))
-  pair.save()
-}
